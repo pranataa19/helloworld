@@ -119,6 +119,130 @@
             /* Jarak antara bubble */
         }
 
+        /* Tambahan CSS untuk memperbaiki tampilan respons */
+        .bubble {
+
+            word-wrap: break-word;
+        }
+
+        /* Heading */
+        .bubble h1,
+        .bubble h2,
+        .bubble h3 {
+            margin: 0.5rem 0;
+            font-weight: bold;
+        }
+
+        .bubble h1 {
+            font-size: 1.5rem;
+            color: #0056b3;
+        }
+
+        .bubble h2 {
+            font-size: 1.3rem;
+            color: #0078ff;
+        }
+
+        .bubble h3 {
+            font-size: 1.2rem;
+            color: #3399ff;
+        }
+
+        /* Blockquote (Kutipan) */
+        .bubble blockquote {
+            margin: 1rem 0;
+            padding: 0.75rem 1rem;
+            border-left: 4px solid #0078ff;
+            background-color: #f0f4ff;
+            color: #333;
+            font-style: italic;
+        }
+
+        /* Inline Code */
+        .bubble code {
+            font-family: 'Courier New', monospace;
+            background-color: #f1f1f1;
+            padding: 2px 4px;
+            border-radius: 4px;
+            color: #d63384;
+        }
+
+        /* Block Code */
+        .bubble pre {
+            background-color: #2e2e2e;
+            color: #f8f8f2;
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            margin-top: 1rem;
+            white-space: pre-wrap;
+        }
+
+        .bubble pre code {
+            color: inherit;
+        }
+
+        /* Unordered and Ordered List */
+        .bubble ul,
+        .bubble ol {
+            margin: 0.75rem 1.25rem;
+            padding-left: 1.25rem;
+        }
+
+        .bubble ul li {
+            list-style-type: disc;
+            margin-bottom: 0.5rem;
+        }
+
+        .bubble ol li {
+            list-style-type: decimal;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Link */
+        .bubble a {
+            color: #0078ff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .bubble a:hover {
+            text-decoration: underline;
+        }
+
+        /* Dark Mode Adjustments */
+        .dark-mode .bubble {
+            background-color: #333;
+            color: #e0e0e0;
+        }
+
+        .dark-mode .bubble h1,
+        .dark-mode .bubble h2,
+        .dark-mode .bubble h3 {
+            color: #80bfff;
+        }
+
+        .dark-mode .bubble blockquote {
+            background-color: #3a3a3a;
+            border-left: 4px solid #80bfff;
+            color: #ccc;
+        }
+
+        .dark-mode .bubble pre {
+            background-color: #444;
+            color: #f1f1f1;
+        }
+
+        .dark-mode .bubble code {
+            background-color: #555;
+            color: #ff79c6;
+        }
+
+        .dark-mode .bubble a {
+            color: #80bfff;
+        }
+
         .bubble.user {
             background-color: #0078ff;
             color: #fff;
@@ -265,19 +389,32 @@
                     const data = await response.json();
                     if (response.ok) {
                         const formattedResponse = data
-                            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                            .replace(/##(.*?)##/g, '<strong>$1</strong>')
-                            .replace(/^\s*\*\s*(.*?)\s*\*$/g, '$1')
-                            .replace(/\s*\*\s*(.*?)\s*\*\s*/g, '$1')
-                            .replace(/^\s*#+\s*/gm, '')
-                            .replace(/(\d+\.\s?)/g, '<br>$1')
-                            .replace(/\. *([#*])/g, '.<br>')
-                            .replace(/\. *\*\*/g, '.<br>')
-                            .replace(/\. *##/g, '.<br>')
+                            .replace(/^### (.*?)$/gm, '<h3>$1</h3>')
+                            .replace(/^## (.*?)$/gm, '<h2>$1</h2>')
+                            .replace(/^# (.*?)$/gm, '<h1>$1</h1>')
+                            // Bold and Italic
+                            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Bold
+                            .replace(/__(.*?)__/g, '<em>$1</em>') // Italic
+                            // Inline Code
+                            .replace(/`(.*?)`/g, '<code>$1</code>') // Inline code
+                            // Block Code
+                            .replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>') // Code block
+                            // Links
+                            .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>') // Markdown link
+                            // Quotes
+                            .replace(/^> (.*?)$/gm, '<blockquote>$1</blockquote>') // Blockquote
+                            // Lists
+                            .replace(/^\s*\*\s(.*?)$/gm, '<li>$1</li>') // Unordered list item
+                            .replace(/^\s*\-\s(.*?)$/gm, '<li>$1</li>') // Alternate unordered list item
+                            // Numbers for ordered list
+                            .replace(/^\d+\.\s(.*?)$/gm, '<li>$1</li>')
+                            // Handling paragraph
+                            .replace(/\n\n/g, '</p><p>') // Split paragraphs
+                            // Wrapping everything in <ul> or <ol> if necessary
+                            .replace(/(<li>.*<\/li>)/g, '<ul>$1</ul>')
                             .split('\n')
-                            .map(paragraph => `<p>${paragraph.trim()}</p>`)
+                            .map(paragraph => `<p>${paragraph.trim()}</p>`) // Wrap each paragraph
                             .join('');
-
                         const aiProfile = 'logo/logo.png'; // Update with actual AI profile image path
                         chatbox.innerHTML += `<div class="message ai"><div class="profile"><img src="${aiProfile}" alt="AI"/></div><div class="bubble">${formattedResponse}</div></div>`;
                         saveMessage('ai', formattedResponse, aiProfile);
