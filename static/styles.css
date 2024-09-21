@@ -1,0 +1,377 @@
+/* Color Variables */
+:root {
+    --rich-black: #0D1B2A;
+    --oxford-blue: #1B263B;
+    --yinmn-blue: #415A77;
+    --shadow-blue: #778DA9;
+    --platinum: #E0E1DD;
+}
+
+/* Global Reset */ 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* General Body Styling */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: var(--shadow-blue);
+    color: var(--rich-black);
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Dark Mode Styles */
+.dark-mode {
+    background-color: var(--rich-black);
+    color: var(--platinum);
+}
+
+/* Navbar Styling */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background: var(--platinum);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    color: var(--platinum);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.dark-mode nav {
+    background: var(--oxford-blue);
+}
+
+.dark-mode nav h1{
+    color: var(--platinum);
+}
+/* Navbar Headings */
+nav h1 {
+    font-size: 1.5rem;
+    color: var(--rich-black);
+    
+}
+
+nav .settings {
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+/* Container for the Chat */
+.container {
+    width: 600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 100%;
+    padding-bottom: 120px;
+}
+
+/* Reset Button */
+#resetButton {
+    background-color: var(--yinmn-blue);
+    color: var(--platinum);
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#resetButton:hover {
+    background-color: var(--oxford-blue);
+}
+
+/* Chatbox Styling */
+.chatbox {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    background-color: var(--platinum);
+    transition: background-color 0.3s;
+}
+
+.dark-mode .chatbox {
+    background-color: var(--oxford-blue);
+}
+
+/* Messages */
+.message {
+    margin: 0.5rem 0;
+    display: flex;
+    align-items: flex-end;
+}
+
+.message.user {
+    justify-content: flex-end;
+}
+
+.message.ai {
+    justify-content: flex-start;
+}
+
+.message .profile {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+    background-color: var(--platinum);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.message .profile img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Chat Bubble */
+.bubble {
+    padding: 1rem;
+    max-width: 75%;
+    border-radius: 15px;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+    line-height: 1.6;
+    text-align: left;
+    font-weight: 500;
+    word-wrap: break-word;
+}
+
+.bubble.user {
+    background-color: var(--yinmn-blue);
+    color: var(--platinum);
+    text-align: right;
+}
+
+.bubble.ai {
+    background-color: var(--shadow-blue);
+    color: var(--rich-black);
+}
+
+.dark-mode .bubble.user {
+    background-color: var(--oxford-blue);
+}
+
+.dark-mode .bubble.ai {
+    background-color: var(--yinmn-blue);
+    color: var(--platinum);
+}
+
+/* Headings inside bubbles */
+.bubble h1, .bubble h2, .bubble h3 {
+    margin: 0.5rem 0;
+    font-weight: bold;
+}
+
+.bubble h1 {
+    font-size: 1.5rem;
+    color: var(--rich-black);
+}
+
+.bubble h2 {
+    font-size: 1.3rem;
+    color: var(--yinmn-blue);
+}
+
+.bubble h3 {
+    font-size: 1.2rem;
+    color: var(--oxford-blue);
+}
+
+.dark-mode .bubble h1, .dark-mode .bubble h2, .dark-mode .bubble h3 {
+    color: var(--platinum);
+}
+
+/* Blockquote Styling */
+.bubble blockquote {
+    margin: 1rem 0;
+    padding: 0.75rem 1rem;
+    border-left: 4px solid var(--yinmn-blue);
+    background-color: var(--shadow-blue);
+    font-style: italic;
+}
+
+.dark-mode .bubble blockquote {
+    background-color: var(--oxford-blue);
+    border-left: 4px solid var(--shadow-blue);
+    color: var(--platinum);
+}
+
+/* Inline Code */
+.bubble code {
+    font-family: 'Courier New', monospace;
+    background-color: var(--platinum);
+    padding: 2px 4px;
+    border-radius: 4px;
+    color: var(--yinmn-blue);
+}
+
+/* Block Code */
+pre {
+    background-color: var(--platinum);
+    border: 1px solid var(--shadow-blue);
+    padding: 10px;
+    overflow: auto;
+    border-radius: 5px;
+}
+
+code {
+    font-family: monospace;
+}
+
+/* List Styling */
+.bubble ul, .bubble ol {
+    margin: 0.75rem 1.25rem;
+    padding-left: 1.25rem;
+}
+
+.bubble ul li {
+    list-style-type: disc;
+    margin-bottom: 0.5rem;
+}
+
+.bubble ol li {
+    list-style-type: decimal;
+    margin-bottom: 0.5rem;
+}
+
+/* Links */
+.bubble a {
+    color: var(--yinmn-blue);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.bubble a:hover {
+    text-decoration: underline;
+}
+
+.dark-mode .bubble a {
+    color: var(--shadow-blue);
+}
+
+/* Form Styling */
+form {
+    position: fixed;
+    bottom: 0;
+    width: 600px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    background-color: var(--shadow-blue);
+    padding: 10px;
+    box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 30px;
+    transition: background-color 0.3s;
+}
+
+.dark-mode form {
+    background-color: var(--oxford-blue);
+}
+
+form textarea {
+    flex: 1;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 20px;
+    resize: none;
+    outline: none;
+    font-size: 1rem;
+    background-color: var(--platinum);
+    color: var(--rich-black);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.dark-mode form textarea {
+    background-color: var(--yinmn-blue);
+    color: var(--platinum);
+}
+
+form button {
+    background-color: var(--yinmn-blue);
+    color: var(--platinum);
+    border: none;
+    border-radius: 20px;
+    padding: 0.75rem 1.5rem;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+form button:disabled {
+    background-color: var(--shadow-blue);
+}
+
+.dark-mode form button {
+    background-color: var(--oxford-blue);
+}
+
+@media screen and (max-width: 600px) {
+    /* Adjusting container width for mobile */
+    .container {
+        width: 100%;
+        padding: 0 10px;
+        padding-bottom: 120px;
+    }
+
+    /* Adjusting navbar for mobile */
+
+
+    /* Adjusting chatbox for mobile */
+    .chatbox {
+        margin-top: 10px;
+        border-radius: 10px; /* Sedikit radius untuk estetik */
+        padding: 1rem; /* Padding untuk chatbox */
+    }
+
+    .message .profile img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    /* Adjusting message bubbles for mobile */
+    .bubble {
+        max-width: 90%; /* Menambah lebar maksimum untuk tampilan lebih baik */
+        padding: 0.75rem; /* Padding dalam bubble */
+    }
+
+    /* Adjusting form for mobile */
+    form {
+        width: 100%;
+        border-radius: 10px; /* Sedikit radius untuk estetik */
+        padding: 10px;
+        box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.1); /* Tambahkan bayangan untuk depth */
+    }
+
+    form textarea {
+        font-size: 0.9rem;
+        padding: 0.5rem; /* Tambahkan padding untuk textarea */
+    }
+
+    form button {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    /* Adjusting reset button for mobile */
+    #resetButton {
+        padding: 6px 12px;
+        font-size: 0.9rem;
+        margin-top: 10px; /* Tambahkan margin untuk jarak */
+    }
+}

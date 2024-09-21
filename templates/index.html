@@ -4,344 +4,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Chat</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f5f7fa;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            overflow: hidden;
-            transition: background-color 0.3s, color 0.3s;
-        }
-
-        .dark-mode body {
-            background-color: #2c2c2c;
-            color: #e0e0e0;
-        }
-
-        nav {
-            background-color: #0078ff;
-            color: white;
-            padding: 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            transition: background-color 0.3s;
-        }
-
-        .dark-mode nav {
-            background-color: #1a1a1a;
-        }
-
-        nav h1 {
-            font-size: 1.5rem;
-        }
-
-        nav .settings {
-            font-size: 1.2rem;
-            cursor: pointer;
-        }
-
-        .container {
-            width: 600px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            height: 100%;
-            padding-bottom: 80px;
-        }
-
-        .chatbox {
-            flex-grow: 1;
-            overflow-y: auto;
-            padding: 1rem;
-            border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-            margin-top: 20px;
-            height: calc(100% - 120px);
-            padding-bottom: 80px;
-            background-color: white;
-            transition: background-color 0.3s;
-        }
-
-        .message {
-            margin: 0.5rem 0;
-            display: flex;
-            align-items: flex-end;
-        }
-
-        .message.user {
-            justify-content: flex-end;
-        }
-
-        .message.ai {
-            justify-content: flex-start;
-        }
-
-        .message .profile {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            margin-right: 0.5rem;
-            background-color: #ddd;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-        }
-
-        .message .profile img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .message .bubble {
-            padding: 1rem;
-            max-width: 75%;
-            border-radius: 15px;
-            box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
-            line-height: 1.6;
-            text-align: left;
-            font-weight: 500;
-            margin-bottom: 1rem;
-            /* Jarak antara bubble */
-        }
-
-        /* Tambahan CSS untuk memperbaiki tampilan respons */
-        .bubble {
-
-            word-wrap: break-word;
-        }
-
-        /* Heading */
-        .bubble h1,
-        .bubble h2,
-        .bubble h3 {
-            margin: 0.5rem 0;
-            font-weight: bold;
-        }
-
-        .bubble h1 {
-            font-size: 1.5rem;
-            color: #0056b3;
-        }
-
-        .bubble h2 {
-            font-size: 1.3rem;
-            color: #0078ff;
-        }
-
-        .bubble h3 {
-            font-size: 1.2rem;
-            color: #3399ff;
-        }
-
-        /* Blockquote (Kutipan) */
-        .bubble blockquote {
-            margin: 1rem 0;
-            padding: 0.75rem 1rem;
-            border-left: 4px solid #0078ff;
-            background-color: #f0f4ff;
-            color: #333;
-            font-style: italic;
-        }
-
-        /* Inline Code */
-        .bubble code {
-            font-family: 'Courier New', monospace;
-            background-color: #f1f1f1;
-            padding: 2px 4px;
-            border-radius: 4px;
-            color: #d63384;
-        }
-
-        /* Block Code */
-        .bubble pre {
-            background-color: #2e2e2e;
-            color: #f8f8f2;
-            padding: 1rem;
-            border-radius: 8px;
-            overflow-x: auto;
-            font-family: 'Courier New', monospace;
-            margin-top: 1rem;
-            white-space: pre-wrap;
-        }
-
-        .bubble pre code {
-            color: inherit;
-        }
-
-        /* Unordered and Ordered List */
-        .bubble ul,
-        .bubble ol {
-            margin: 0.75rem 1.25rem;
-            padding-left: 1.25rem;
-        }
-
-        .bubble ul li {
-            list-style-type: disc;
-            margin-bottom: 0.5rem;
-        }
-
-        .bubble ol li {
-            list-style-type: decimal;
-            margin-bottom: 0.5rem;
-        }
-
-        /* Link */
-        .bubble a {
-            color: #0078ff;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .bubble a:hover {
-            text-decoration: underline;
-        }
-
-        /* Dark Mode Adjustments */
-        .dark-mode .bubble {
-            background-color: #333;
-            color: #e0e0e0;
-        }
-
-        .dark-mode .bubble h1,
-        .dark-mode .bubble h2,
-        .dark-mode .bubble h3 {
-            color: #80bfff;
-        }
-
-        .dark-mode .bubble blockquote {
-            background-color: #3a3a3a;
-            border-left: 4px solid #80bfff;
-            color: #ccc;
-        }
-
-        .dark-mode .bubble pre {
-            background-color: #444;
-            color: #f1f1f1;
-        }
-
-        .dark-mode .bubble code {
-            background-color: #555;
-            color: #ff79c6;
-        }
-
-        .dark-mode .bubble a {
-            color: #80bfff;
-        }
-
-        .bubble.user {
-            background-color: #0078ff;
-            color: #fff;
-            text-align: right;
-        }
-
-        .bubble.ai {
-            background-color: #e5e5ea;
-            color: #333;
-        }
-
-        form {
-            position: fixed;
-            bottom: 0;
-            width: 600px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            background-color: white;
-            padding: 10px;
-            box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 30px;
-            transition: background-color 0.3s;
-        }
-
-        .dark-mode form {
-            background-color: #1a1a1a;
-        }
-
-        form textarea {
-            flex: 1;
-            padding: 0.75rem;
-            border: none;
-            border-radius: 20px;
-            resize: none;
-            outline: none;
-            font-size: 1rem;
-            background-color: #f5f7fa;
-            color: #333;
-            transition: background-color 0.3s, color 0.3s;
-        }
-
-        .dark-mode form textarea {
-            background-color: #333;
-            color: #e0e0e0;
-        }
-
-        form button {
-            background-color: #0078ff;
-            color: white;
-            border: none;
-            border-radius: 20px;
-            padding: 0.75rem 1.5rem;
-            cursor: pointer;
-            margin-left: 10px;
-        }
-
-        .dark-mode form button {
-            background-color: #0056b3;
-        }
-
-        form button:disabled {
-            background-color: #ccc;
-        }
-
-        .loader {
-            display: none;
-            text-align: center;
-            font-size: 1rem;
-            color: #666;
-            margin-top: 10px;
-        }
-
-        .loader.active {
-            display: block;
-        }
-
-        .theme-switch {
-            font-size: 1.2rem;
-            cursor: pointer;
-        }
-    </style>
+    <title>Nata Ai</title>
+    <link rel="stylesheet" href="/static/styles.css">
 </head>
 
 <body>
-    <nav>
-        <h1>AI Chat</h1>
-        <span class="settings theme-switch">🌙</span>
+    <nav class="navbar">
+        <div class="logo">
+            <h1>Nata Ai</h1>
+        </div>
+        <div class="settings">
+            <span class="theme-switch" title="Toggle Light/Dark Mode">🌙</span>
+            <button id="resetButton" class="reset" title="Reset Chat">Reset</button>
+        </div>
     </nav>
-
+    
+    
     <div class="container">
         <div class="chatbox" id="chatbox"></div>
-        <div class="loader" id="loader">Memproses...</div>
+        <div class="loader" id="loader" style="display: none;">Memproses...</div>
     </div>
 
     <form id="inputForm">
         <textarea name="user_input" rows="2" placeholder="Ketik pesan..."></textarea>
         <button type="submit">Kirim</button>
     </form>
+
+    <!-- Tombol Reset -->
+    
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -350,9 +40,11 @@
             const inputForm = document.getElementById('inputForm');
             const submitButton = inputForm.querySelector('button');
             const themeSwitch = document.querySelector('.theme-switch');
+            const resetButton = document.getElementById('resetButton');
 
             const loadMessages = () => {
                 const messages = JSON.parse(localStorage.getItem('messages')) || [];
+                chatbox.innerHTML = '';  // Kosongkan chatbox sebelum memuat ulang
                 messages.forEach(message => {
                     chatbox.innerHTML += `<div class="message ${message.sender}"><div class="profile"><img src="${message.profile}" alt="${message.sender}"/></div><div class="bubble">${message.text}</div></div>`;
                 });
@@ -377,47 +69,61 @@
                     return;
                 }
 
-                const userProfile = 'logo/logo.png'; // Update with actual user profile image path
+                const userProfile = '/static/profileuser.jpeg'; // Sesuaikan jalur gambar profil pengguna
                 chatbox.innerHTML += `<div class="message user"><div class="profile"><img src="${userProfile}" alt="User"/></div><div class="bubble">${userMessage}</div></div>`;
                 saveMessage('user', userMessage, userProfile);
                 chatbox.scrollTop = chatbox.scrollHeight;
-                loader.classList.add('active');
+                loader.style.display = 'block';  // Menampilkan loader hanya setelah submit
                 submitButton.disabled = true;
 
                 try {
                     const response = await fetch('/generate', { method: 'POST', body: formData });
                     const data = await response.json();
                     if (response.ok) {
-                        const formattedResponse = data
-                            .replace(/^### (.*?)$/gm, '<h3>$1</h3>')
-                            .replace(/^## (.*?)$/gm, '<h2>$1</h2>')
-                            .replace(/^# (.*?)$/gm, '<h1>$1</h1>')
-                            // Bold and Italic
-                            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Bold
-                            .replace(/__(.*?)__/g, '<em>$1</em>') // Italic
-                            // Inline Code
-                            .replace(/`(.*?)`/g, '<code>$1</code>') // Inline code
-                            // Block Code
-                            .replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>') // Code block
-                            // Links
-                            .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>') // Markdown link
-                            // Quotes
-                            .replace(/^> (.*?)$/gm, '<blockquote>$1</blockquote>') // Blockquote
-                            // Lists
-                            .replace(/^\s*\*\s(.*?)$/gm, '<li>$1</li>') // Unordered list item
-                            .replace(/^\s*\-\s(.*?)$/gm, '<li>$1</li>') // Alternate unordered list item
-                            // Numbers for ordered list
-                            .replace(/^\d+\.\s(.*?)$/gm, '<li>$1</li>')
-                            // Handling paragraph
-                            .replace(/\n\n/g, '</p><p>') // Split paragraphs
-                            // Wrapping everything in <ul> or <ol> if necessary
-                            .replace(/(<li>.*<\/li>)/g, '<ul>$1</ul>')
-                            .split('\n')
-                            .map(paragraph => `<p>${paragraph.trim()}</p>`) // Wrap each paragraph
-                            .join('');
-                        const aiProfile = 'logo/logo.png'; // Update with actual AI profile image path
-                        chatbox.innerHTML += `<div class="message ai"><div class="profile"><img src="${aiProfile}" alt="AI"/></div><div class="bubble">${formattedResponse}</div></div>`;
-                        saveMessage('ai', formattedResponse, aiProfile);
+                        let responseStr = data.split("\n").join("</br>");
+
+                        let responseArray = responseStr.split("**");
+                        let responseStr2 = "";
+                        for (let i = 0; i < responseArray.length; i++) {
+                            if (i === 0 || i % 2 !== 1) {
+                                responseStr2 += responseArray[i];
+                            } else {
+                                responseStr2 += "<strong>" + responseArray[i] + "</strong>";
+                            }
+                        }
+
+                        let responseArray2 = responseStr2.split("</br>");
+                        let responseStr3 = "";
+                        let inCodeBlock = false;
+
+                        for (let i = 0; i < responseArray2.length; i++) {
+                            const line = responseArray2[i].trim();
+
+                            if (line.startsWith("```bash")) {
+                                inCodeBlock = true;
+                                responseStr3 += `<pre><code class="language-bash">`;
+                            } else if (line.startsWith("```")) {
+                                inCodeBlock = false;
+                                responseStr3 += `</code></pre>`;
+                            } else {
+                                if (inCodeBlock) {
+                                    responseStr3 += line + "\n";
+                                } else {
+                                    if (line.startsWith("##")) {
+                                        responseStr3 += "<strong>" + line.replace("##", "").trim() + "</strong></br>";
+                                    } else if (line.startsWith("*")) {
+                                        responseStr3 += `<li>${line.replace("*", "").trim()}</li>`;
+                                    } else {
+                                        responseStr3 += line + "</br>";
+                                    }
+                                }
+                            }
+                        }
+
+                        const aiProfile = '/static/profileai.png'; // Sesuaikan jalur gambar profil AI
+                        chatbox.innerHTML += `<div class="message ai"><div class="profile"><img src="${aiProfile}" alt="AI"/></div><div class="bubble">${responseStr3}</div></div>`;
+                        saveMessage('ai', responseStr3, aiProfile);
+
                     } else {
                         alert('Error: ' + data.message);
                     }
@@ -425,12 +131,20 @@
                     alert('Gagal mengirim pesan. Coba lagi.');
                 }
 
-                loader.classList.remove('active');
+                loader.style.display = 'none';  // Menyembunyikan loader setelah respons diterima
                 submitButton.disabled = false;
-                e.target.reset(); // Reset textarea
+                e.target.reset();
                 chatbox.scrollTop = chatbox.scrollHeight;
             };
 
+            // Fitur reset untuk menghapus semua data chat
+            resetButton.onclick = () => {
+                if (confirm('Apakah Anda yakin ingin menghapus semua percakapan?')) {
+                    localStorage.clear();  // Menghapus semua data di localStorage
+                    chatbox.innerHTML = '';  // Mengosongkan chatbox
+                    alert('Semua percakapan telah dihapus.');
+                }
+            };
 
             themeSwitch.onclick = () => {
                 document.body.classList.toggle('dark-mode');
