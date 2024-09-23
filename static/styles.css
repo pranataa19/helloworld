@@ -5,6 +5,7 @@
     --yinmn-blue: #415A77;
     --shadow-blue: #778DA9;
     --platinum: #E0E1DD;
+    --red:#950909dd;
 }
 
 /* Global Reset */ 
@@ -55,9 +56,18 @@ nav {
 }
 /* Navbar Headings */
 nav h1 {
+    font-family: 'Coiny', cursive;
     font-size: 1.5rem;
     color: var(--rich-black);
+    text-decoration: none;
     
+}
+a{
+    text-decoration: none;
+}
+nav img{
+    width: 120px;
+    height: 30px;
 }
 
 nav .settings {
@@ -88,7 +98,7 @@ nav .settings {
 }
 
 #resetButton:hover {
-    background-color: var(--oxford-blue);
+    background-color: var(--red);
 }
 
 /* Chatbox Styling */
@@ -311,13 +321,28 @@ form button {
     cursor: pointer;
     margin-left: 10px;
 }
+i.fas.fa-paper-plane {
+    font-size: x-large;
+}
+i.fa-spin {
+    animation: spin 1s infinite linear;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
 
 form button:disabled {
     background-color: var(--shadow-blue);
 }
 
 .dark-mode form button {
-    background-color: var(--oxford-blue);
+    background-color: var(--yinmn-blue);
 }
 
 @media screen and (max-width: 600px) {
